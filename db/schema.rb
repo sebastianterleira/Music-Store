@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_07_044638) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_07_185340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_044638) do
 
   create_table "albums", force: :cascade do |t|
     t.string "name", null: false
-    t.decimal "price", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
     t.bigint "artist_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,9 +52,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_044638) do
   end
 
   create_table "order_details", force: :cascade do |t|
+    t.integer "quantity"
     t.bigint "order_id", null: false
     t.bigint "album_song_id", null: false
-    t.integer "quantity", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["album_song_id"], name: "index_order_details_on_album_song_id"
@@ -62,9 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_044638) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.date "date", null: false
+    t.date "date"
     t.bigint "customer_id", null: false
-    t.integer "total_price", null: false
+    t.integer "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"

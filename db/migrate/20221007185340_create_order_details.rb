@@ -1,9 +1,9 @@
 class CreateOrderDetails < ActiveRecord::Migration[7.0]
   def change
     create_table :order_details do |t|
+      t.integer :quantity
       t.references :order, null: false, foreign_key: true
       t.references :album_song, null: false, foreign_key: true
-      t.integer :quantity, null: false
 
       t.timestamps
     end
