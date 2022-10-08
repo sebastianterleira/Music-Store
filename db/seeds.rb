@@ -45,4 +45,18 @@ end
 puts "Finish seeding Artists"
 
 puts "Start seeding Customers"
+10.times do |number| 
+    customers = Customer.new(
+       username: Faker::FunnyName.unique.two_word_name, #=> "Shirley Knot"
+       email: Faker::Internet.email(name: "Customer #{number + 1}"), #=> "nancy@terry.biz"
+       password: Faker::Internet.password(min_length: 10, max_length: 20, mix_case: true), #=> "3k5qS15aNmG"
+       name: Faker::Name.unique.name # This will return a unique name every time it is called
+    )
+    if customers.save
+        puts "Customer created succesfully"
+    else
+        puts customers.errors.full_messages.join(",")
+    end
+end
+
 puts "Finish seeding Customers"
