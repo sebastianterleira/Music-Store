@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
     t.bigint "artist_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration"
     t.index ["artist_id"], name: "index_albums_on_artist_id"
   end
 
@@ -40,6 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "biography"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -50,6 +52,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
     t.boolean "active_flag", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_customers_on_email", unique: true
+    t.index ["username"], name: "index_customers_on_username", unique: true
   end
 
   create_table "order_details", force: :cascade do |t|
