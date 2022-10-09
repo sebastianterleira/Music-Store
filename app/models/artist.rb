@@ -1,4 +1,5 @@
 class Artist < ApplicationRecord
+  # has_many :album
   validates :name, presence: true
   validates :birth_date, comparison: { less_than: Time.zone.today,
     message: "Can't be in the future" }, if: :verify_birth_date?

@@ -77,7 +77,7 @@ while id_artist <= Artist.all.size
     rand(2..6).times do |num|
         albums = Album.new(
             name: Faker::Music::RockBand.unique.name, #=> "Led Zeppelin", #=> "Dream On",
-            price: 1,
+            price: rand(1..20),
             artist_id: id_artist,
             duration: 0
         )
@@ -108,14 +108,20 @@ end
 puts "Finish seeding Songs"
 
 # Orders
+# OrderDetail.joins(:order).joins(:album).group(:customer_id, :date).order(:customer_id).sum("price*quantity")
 puts "Start seeding Orders"
 id_customer = 1
 while id_customer <= Customer.all.size
     rand(1..5).times do |num|
         orders = Order.new(
             date: Faker::Date.between(from: '2014-09-23', to: '2022-09-25'), #=> #<Date: 2014-09-24>
-            total_price: 1,
-            customer_id: id_customer
+            # total_price: OrderDetail.select("SUM(price*quantity)").joins(:order).joins(:album).where("customer_id = ?", id_customer ).group(:customer_id, :date).order(:customer_id),
+            # OrderDetail.select("SUM(price*quantity)").joins(:order).joins(:album).where("customer_id = 1").group(:customer_id, :date).order(:customer_id)
+            # OrderDetail.joins(:album).where("customer_id = 1").group(:customer_id, :date).order(:customer_id)
+            # OrderDetail.joins(:album)
+            # select * from order_details od join album as a ON od.album_id = a.id;
+            total_price: 1
+            # customer_id: id_customer
         )
         save_data(orders,"Order")
     end
@@ -134,9 +140,28 @@ while id_order <= Order.all.size
         order_details = OrderDetail.new(
             album_id: Album.all.sample.id,
             order_id: id_order,
-            quantity: rand(1..3)
+            quantity: rand(1..3),
+            customer_id: Customer.all.sample.id
+
         )
         save_data(order_details,"Order_detail")
     end
     id_order += 1
 end
+
+
+# id_cust = 1
+# while id_cust <= Customer.all.size
+#   sumas = OrderDetail.select("SUM(price*quantity)").joins(:order).joins(:album).where("customer_id = #{id_order}").group(:customer_id, :date).order(:customer_id)
+#   cust = OrderDetail.joins(:order).joins(:album).where("customer_id = #{id_order}").group(:customer_id, :date).order(:customer_id)
+
+#   n1m = 0
+#   cont = cust.size
+#   cont.times do |num|
+#     cust[n1m].update(total_price: sumas[n1m])
+#     n1m += 1
+#   end
+#   cust.each{|key,value| }
+
+#   id_cust += 1
+# end
