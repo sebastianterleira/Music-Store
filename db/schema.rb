@@ -14,15 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "album_songs", force: :cascade do |t|
-    t.bigint "album_id", null: false
-    t.bigint "song_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["album_id"], name: "index_album_songs_on_album_id"
-    t.index ["song_id"], name: "index_album_songs_on_song_id"
-  end
-
   create_table "albums", force: :cascade do |t|
     t.string "name", null: false
     t.decimal "price", precision: 10, scale: 2, null: false
@@ -36,12 +27,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
   create_table "artists", force: :cascade do |t|
     t.string "name", null: false
     t.string "nationality", null: false
-    t.text "biography"
     t.date "birth_date"
     t.date "death_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "biography"
+    t.text "biography"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -59,10 +49,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
   create_table "order_details", force: :cascade do |t|
     t.integer "quantity"
     t.bigint "order_id", null: false
-    t.bigint "album_song_id", null: false
+    t.bigint "album_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["album_song_id"], name: "index_order_details_on_album_song_id"
+    t.index ["album_id"], name: "index_order_details_on_album_id"
     t.index ["order_id"], name: "index_order_details_on_order_id"
   end
 
@@ -77,15 +67,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_08_182045) do
 
   create_table "songs", force: :cascade do |t|
     t.string "name", null: false
+    t.bigint "album_id", null: false
     t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_songs_on_album_id"
   end
 
-  add_foreign_key "album_songs", "albums"
-  add_foreign_key "album_songs", "songs"
   add_foreign_key "albums", "artists"
-  add_foreign_key "order_details", "album_songs"
+  add_foreign_key "order_details", "albums"
   add_foreign_key "order_details", "orders"
   add_foreign_key "orders", "customers"
+  add_foreign_key "songs", "albums"
 end
