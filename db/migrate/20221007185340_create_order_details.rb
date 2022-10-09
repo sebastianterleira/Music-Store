@@ -4,6 +4,7 @@ class CreateOrderDetails < ActiveRecord::Migration[7.0]
       t.integer :quantity
       t.references :order, null: false, foreign_key: true
       t.references :album, null: false, foreign_key: true
+      t.references :customer, null: false, foreign_key: true
 
       t.timestamps
     end

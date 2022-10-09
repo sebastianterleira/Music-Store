@@ -1,4 +1,5 @@
 class Customer < ApplicationRecord
+  # has_many :order
   PASSWORD_REQUIREMENTS = /\A
     (?=.{6,}) # At least 8 characters long
     (?=.*\d) # Contain at least one number
